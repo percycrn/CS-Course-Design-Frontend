@@ -1,0 +1,39 @@
+@import "~antd/dist/antd.css";
+
+/* main page */
+#components-layout-demo-side .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+
+.App-header {
+  grid-area: h;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 32px;
+  align-items: center;
+  background: #ffffff;
+  min-height: 50px;
+}
+/* end main page */
+
+/* sidebar item */
+.App-logo {
+  display: flex;
+  margin: 0 auto;
+  padding: 20px 0px 20px 0px;
+  flex: 0 0 20%;
+  max-width: 80px;
+  animation: App-logo-spin infinite 15s linear;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* end sidebar item */
