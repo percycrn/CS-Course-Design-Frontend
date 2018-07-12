@@ -8,13 +8,43 @@
 }
 
 .App-header {
-  grid-area: h;
   display: flex;
   justify-content: flex-end;
   padding-right: 32px;
   align-items: center;
   background: #ffffff;
-  min-height: 50px;
+  height: 8%;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  position: relative;
+}
+
+.App-breadcrumb {
+  padding: 16px 32px;
+  background: #ffffff;
+  font-size: 16px;
+}
+.App-title {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 16px;
+}
+.App-search {
+  float: right;
+  padding: 16px 16px 0px 16px;
+  text-align: right;
+  margin-left: auto;
+  display: flex;
+  width: fit-content;
+}
+
+.App-content {
+  margin: 8px 10px;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.App-root {
+  align-self: center;
 }
 /* end main page */
 
@@ -22,7 +52,7 @@
 .App-logo {
   display: flex;
   margin: 0 auto;
-  padding: 20px 0px 20px 0px;
+  padding: 20px 0px;
   flex: 0 0 20%;
   max-width: 80px;
   animation: App-logo-spin infinite 15s linear;
