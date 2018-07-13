@@ -11,20 +11,20 @@ const data = [
     title: "Ant Design Title 2"
   }
 ];
-class Released extends Component {
+class Lostandfound extends Component {
   render() {
     return (
       <div>
         <Breadcrumb className="App-breadcrumb">
           <Breadcrumb.Item>HomePage</Breadcrumb.Item>
           <Breadcrumb.Item>
-            <span style={{ fontWeight: "bold" }}>Released</span>
+            <span style={{ fontWeight: "bold" }}>Lostandfound</span>
           </Breadcrumb.Item>
         </Breadcrumb>
         <div className="App-content">
           <div style={{ display: "flex", padding: "4px 16px 0px 16px" }}>
             <div className="App-title" id="title">
-              List of Released Items
+              List of Lostandfound Items
             </div>
             <div className="App-search">
               <Button.Group>
@@ -57,4 +57,4 @@ class Released extends Component {
   }
 }
 
-export default Released;
+export default Lostandfound;

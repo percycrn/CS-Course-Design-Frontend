@@ -1,25 +1,25 @@
 import React, { Component } from "react";
 import { Breadcrumb } from "antd";
-import ReleasingForm from "./ReleasingForm";
+import AccountForm from "./AccountForm";
 
-class Releasing extends Component {
+class Account extends Component {
   render() {
     return (
       <div>
         <Breadcrumb className="App-breadcrumb">
           <Breadcrumb.Item>HomePage</Breadcrumb.Item>
           <Breadcrumb.Item>
-            <span style={{ fontWeight: "bold" }}>Releasing</span>
+            <span style={{ fontWeight: "bold" }}>Account</span>
           </Breadcrumb.Item>
         </Breadcrumb>
         <div className="App-content">
           <div style={{ display: "flex", padding: "4px 16px 0px 16px" }}>
             <div className="App-title" id="title">
-              Release Now!
+              Information of Account
             </div>
           </div>
           <div style={{ padding: "0px 100px 16px 16px" }}>
-            <ReleasingForm />
+            <AccountForm />
           </div>
         </div>
       </div>
@@ -27,4 +27,4 @@ class Releasing extends Component {
   }
 }
 
-export default Releasing;
+export default Account;

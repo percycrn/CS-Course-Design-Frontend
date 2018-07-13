@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Input, Breadcrumb, Button, List } from "antd";
-import FoundItem from "./FoundItem";
+import { Input, Breadcrumb, List } from "antd";
+import ClaimItem from "./ClaimItem";
 
 const Search = Input.Search;
 const data = [
@@ -11,26 +11,22 @@ const data = [
     title: "Ant Design Title 2"
   }
 ];
-class Released extends Component {
+class Claim extends Component {
   render() {
     return (
       <div>
         <Breadcrumb className="App-breadcrumb">
           <Breadcrumb.Item>HomePage</Breadcrumb.Item>
           <Breadcrumb.Item>
-            <span style={{ fontWeight: "bold" }}>Released</span>
+            <span style={{ fontWeight: "bold" }}>Claim</span>
           </Breadcrumb.Item>
         </Breadcrumb>
         <div className="App-content">
           <div style={{ display: "flex", padding: "4px 16px 0px 16px" }}>
             <div className="App-title" id="title">
-              List of Released Items
+              List of Claimed Items
             </div>
             <div className="App-search">
-              <Button.Group>
-                <Button>Founds</Button>
-                <Button>Losts</Button>
-              </Button.Group>
               <Search
                 placeholder="input search text"
                 onSearch={value => console.log(value)}
@@ -48,7 +44,7 @@ class Released extends Component {
                 pageSize: 6,
                 size: "small"
               }}
-              renderItem={item => <FoundItem />}
+              renderItem={item => <ClaimItem />}
             />
           </div>
         </div>
@@ -57,4 +53,4 @@ class Released extends Component {
   }
 }
 
-export default Released;
+export default Claim;

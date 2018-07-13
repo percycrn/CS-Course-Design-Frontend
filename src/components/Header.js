@@ -1,7 +1,7 @@
-import React from 'react';
-import { Menu, Dropdown, Icon } from 'antd';
+import React from "react";
+import { Menu, Dropdown, Icon } from "antd";
 
-export default (props) => (
+export default props => (
   <div className="App-header">
     <Dropdown
       overlay={
@@ -11,7 +11,7 @@ export default (props) => (
       }
     >
       <span className="ant-dropdown-link">
-        Welcome to activity manager! <Icon type="down" />
+        Welcome to lostandfound! <Icon type="down" />
       </span>
     </Dropdown>
   </div>

@@ -1,18 +1,17 @@
 import React, { Component } from "react";
 import { withRouter, Route, Switch, NavLink } from "react-router-dom";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import { Layout, Menu, Icon } from "antd";
 import Header from "./Header";
 import logo from "./logo.svg";
 
-import Lostandfound from "./Lostandfound";
+import Lostandfound from "./lostandfound/Lostandfound";
 import Released from "./release~/Released";
 import Releasing from "./release~/Releasing";
-import Account from "./Account";
-import Application from "./Application";
-import Claim from "./Claim";
-import { height } from "window-size";
+import Account from "./account/Account";
+import Application from "./application/Application";
+import Claim from "./claim/Claim";
 
-const { Content, Footer, Sider } = Layout;
+const { Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class MainPage extends Component {
@@ -55,7 +54,7 @@ class MainPage extends Component {
               }
             >
               <Menu.Item key="/release/releasing">
-                <NavLink to="/release/releasing">releasing</NavLink>
+                <NavLink to="/release/releasing">release now!</NavLink>
               </Menu.Item>
               <Menu.Item key="/release/released">
                 <NavLink to="/release/released">released</NavLink>
