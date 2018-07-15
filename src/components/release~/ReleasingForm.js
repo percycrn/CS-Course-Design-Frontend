@@ -6,57 +6,86 @@ import {
   Tooltip,
   Icon,
   Button,
-  Upload,
-  Radio
+  Radio,
+  Modal
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import axios from "axios";
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-
 class ReleasingForm extends Component {
   state = {
-    confirmDirty: false,
     disabled: false,
-    value: 1
+    value: 1,
+    phone: "foundPhone"
+  };
+
+  handleBeforeSubmit = e => {
+    const form = this.props.form;
+    form.setFieldsValue({
+      time: new Date(form.getFieldValue("DatePicker")).getTime()
+    });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    const form = this.props.form;
+    form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
+      }
+      if (this.state.value === 1) {
+        // found
+        axios.post("/found", values).then(({ data }) => {
+          console.log(data);
+          if (data.status === 200) {
+            Modal.info({ content: data.message });
+            form.setFieldsValue({
+              time: "",
+              name: "",
+              location: "",
+              storage: "",
+              outline: ""
+            });
+          } else {
+            Modal.error({ content: data.message });
+          }
+        });
+      } else {
+        // lost
+        axios.post("/lost", values).then(({ data }) => {
+          console.log(data);
+          if (data.status === 200) {
+            Modal.info({ content: data.message });
+            form.setFieldsValue({
+              time: "",
+              name: "",
+              location: "",
+              storage: "",
+              outline: ""
+            });
+          } else {
+            Modal.error({ content: data.message });
+          }
+        });
       }
     });
   };
 
-  handleConfirmBlur = e => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
-
-  validateToNextPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
-    }
-    callback();
-  };
-
   handleFormChange = e => {
     if (e.target.value === 1) {
-      this.setState({ disabled: false, value: e.target.value });
+      this.setState({
+        disabled: false,
+        value: e.target.value,
+        phone: "foundPhone"
+      });
     } else {
-      this.setState({ disabled: true, value: e.target.value });
+      this.setState({
+        disabled: true,
+        value: e.target.value,
+        phone: "lostPhone"
+      });
     }
   };
 
@@ -94,11 +123,8 @@ class ReleasingForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} className="App-form">
         <FormItem {...formItemLayout} label="type">
-          {getFieldDecorator("type")(
-            <RadioGroup
-              value={this.state.value}
-              onChange={this.handleFormChange}
-            >
+          {getFieldDecorator("type", { initialValue: this.state.value })(
+            <RadioGroup onChange={this.handleFormChange}>
               <Radio value={1}>found</Radio>
               <Radio value={2}>lost</Radio>
             </RadioGroup>
@@ -136,8 +162,12 @@ class ReleasingForm extends Component {
           })(<Input />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Time">
-          {getFieldDecorator("date-picker", config)(
-            <DatePicker style={{ width: "100%" }} />
+          {getFieldDecorator("DatePicker", config)(
+            <DatePicker
+              style={{ width: "100%" }}
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+            />
           )}
         </FormItem>
         <FormItem
@@ -151,28 +181,22 @@ class ReleasingForm extends Component {
             </span>
           }
         >
-          {getFieldDecorator("Storage", {
-            rules: [
-              {
-                required: true,
-                message: "Please input the Storage!",
-                whitespace: true
-              }
-            ]
-          })(<Input disabled={this.state.disabled} />)}
+          {getFieldDecorator("storage", {})(
+            <Input disabled={this.state.disabled} />
+          )}
         </FormItem>
-        <FormItem {...formItemLayout} label="Upload">
+        {/* <FormItem {...formItemLayout} label="Upload">
           {getFieldDecorator("upload", {
             valuePropName: "fileList",
             getValueFromEvent: this.normFile
           })(
-            <Upload name="logo" action="/upload.do" listType="picture">
+            <Upload {...props}>
               <Button>
                 <Icon type="upload" /> Upload picture
               </Button>
             </Upload>
           )}
-        </FormItem>
+        </FormItem> */}
         <FormItem
           {...formItemLayout}
           label={
@@ -195,9 +219,21 @@ class ReleasingForm extends Component {
           })(<TextArea rows={2} />)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            onClick={this.handleBeforeSubmit}
+          >
             Release
           </Button>
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator(this.state.phone, {
+            initialValue: this.props.phone
+          })(<Input type="hidden" />)}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator("time", {})(<Input type="hidden" />)}
         </FormItem>
       </Form>
     );

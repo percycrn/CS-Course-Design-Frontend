@@ -6,7 +6,7 @@ export default props => (
     <Dropdown
       overlay={
         <Menu>
-          <Menu.Item onClick={props.handelSignOut}>logout</Menu.Item>
+          <Menu.Item onClick={props.handleSignOut}>logout</Menu.Item>
         </Menu>
       }
     >

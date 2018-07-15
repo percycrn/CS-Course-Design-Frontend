@@ -10,14 +10,12 @@ class SignIn extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-
         axios
           .post("/signin", values)
           .then(({ data }) => {
             console.log(data);
-            if (data.status === 200||true) {
-              //this.props.handelSignIn(data.uid);
-              this.props.handelSignIn(1);
+            if (data.status === 200) {
+              this.props.handleSignIn(data.users);
             } else {
               Modal.error({ content: data.message });
             }
@@ -36,7 +34,7 @@ class SignIn extends Component {
           </FormItem>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
-              {getFieldDecorator("phoneNumber", {
+              {getFieldDecorator("phone", {
                 rules: [
                   {
                     required: true,

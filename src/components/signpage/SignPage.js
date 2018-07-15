@@ -9,11 +9,11 @@ export default class extends Component {
   render() {
     return this.state.isSignIn ? (
       <SignIn
-        handelSignIn={this.props.handelSignIn}
-        handelSignState={this.signUp}
+        handleSignIn={this.props.handleSignIn}
+        handleSignState={this.signUp}
       />
     ) : (
-      <SignUp handelSignState={this.signIn} />
+      <SignUp handleSignState={this.signIn} />
     );
   }
 }

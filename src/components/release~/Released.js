@@ -1,17 +1,44 @@
 import React, { Component } from "react";
 import { Input, Breadcrumb, Button, List } from "antd";
-import FoundItem from "./FoundItem";
+import ReleasedItem from "./ReleasedItem";
+import axios from "axios";
 
 const Search = Input.Search;
-const data = [
-  {
-    title: "Ant Design Title 1"
-  },
-  {
-    title: "Ant Design Title 2"
-  }
-];
 class Released extends Component {
+  state = {
+    found: [],
+    lost: [],
+    data: [],
+    type: 1
+  };
+  handleFoundData = e => {
+    this.setState({ data: this.state.found, type: 1 });
+  };
+  handleLostData = e => {
+    this.setState({ data: this.state.lost, type: 0 });
+  };
+
+  allFounds() {
+    axios.get(`/users/${this.props.userId}/found`).then(({ data }) => {
+      this.setState({ found: data, data: data });
+    });
+  }
+
+  allLosts() {
+    axios.get(`/users/${this.props.userId}/lost`).then(({ data }) => {
+      this.setState({ lost: data, data: data });
+    });
+  }
+
+  componentWillMount() {
+    axios.get(`/users/${this.props.userId}/found`).then(({ data }) => {
+      this.setState({ found: data, data: data });
+    });
+    axios.get(`/users/${this.props.userId}/lost`).then(({ data }) => {
+      this.setState({ lost: data });
+    });
+  }
+
   render() {
     return (
       <div>
@@ -28,13 +55,17 @@ class Released extends Component {
             </div>
             <div className="App-search">
               <Button.Group>
-                <Button>Founds</Button>
-                <Button>Losts</Button>
+                <Button onClick={this.handleFoundData}>Founds</Button>
+                <Button onClick={this.handleLostData}>Losts</Button>
               </Button.Group>
               <Search
                 placeholder="input search text"
                 onSearch={value => console.log(value)}
-                style={{ width: "300px", marginLeft: "16px", height: "30px" }}
+                style={{
+                  width: "300px",
+                  marginLeft: "16px",
+                  height: "30px"
+                }}
               />
             </div>
           </div>
@@ -42,13 +73,20 @@ class Released extends Component {
             <List
               className="demo-loadmore-list"
               itemLayout="horizontal"
-              dataSource={data}
+              dataSource={this.state.data}
               pagination={{
                 position: "bottom",
                 pageSize: 6,
                 size: "small"
               }}
-              renderItem={item => <FoundItem />}
+              renderItem={item => (
+                <ReleasedItem
+                  data={item}
+                  handleFoundsRefresh={this.allFounds.bind(this)}
+                  handleLostsRefresh={this.allLosts.bind(this)}
+                  type={this.state.type}
+                />
+              )}
             />
           </div>
         </div>

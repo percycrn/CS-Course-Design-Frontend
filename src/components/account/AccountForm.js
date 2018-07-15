@@ -1,20 +1,38 @@
 import React, { Component } from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Modal } from "antd";
+import axios from "axios";
 
 const FormItem = Form.Item;
 
 class AccountForm extends Component {
   state = {
     confirmDirty: false,
-    autoCompleteResult: []
+    formData: []
   };
+  componentDidMount() {
+    axios
+      .get(`/users/${this.props.userId}`)
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ formData: data });
+      })
+      .catch(err => err && console.error(err));
+  }
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        console.log("content of form: ", values);
       }
+      axios.put(`/users/${this.props.userId}`, values).then(({ data }) => {
+        console.log(data);
+        if (data.status === 200) {
+          Modal.info({ content: data.message });
+        } else {
+          Modal.error({ content: data.message });
+        }
+      });
     });
   };
 
@@ -42,7 +60,6 @@ class AccountForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -79,16 +96,48 @@ class AccountForm extends Component {
                 required: true,
                 message: "Please input your E-mail!"
               }
-            ]
+            ],
+            initialValue: this.state.formData.email
+          })(<Input />)}
+        </FormItem>
+        <FormItem {...formItemLayout} label="name">
+          {getFieldDecorator("name", {
+            rules: [
+              {
+                required: true,
+                message: "Please input your name!",
+                whitespace: true
+              }
+            ],
+            initialValue: this.state.formData.name
+          })(<Input />)}
+        </FormItem>
+
+        <FormItem {...formItemLayout} label="id">
+          {getFieldDecorator("id", {
+            rules: [
+              {
+                required: true,
+                message: "Please input your Idcard!"
+              }
+            ],
+            initialValue: this.state.formData.id
+          })(<Input id="id" />)}
+        </FormItem>
+        <FormItem {...formItemLayout} label="address">
+          {getFieldDecorator("address", {
+            rules: [
+              {
+                required: true,
+                message: "Please input your address!"
+              }
+            ],
+            initialValue: this.state.formData.address
           })(<Input />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Password">
           {getFieldDecorator("password", {
             rules: [
-              {
-                required: true,
-                message: "Please input your password!"
-              },
               {
                 validator: this.validateToNextPassword
               }
@@ -99,46 +148,10 @@ class AccountForm extends Component {
           {getFieldDecorator("confirm", {
             rules: [
               {
-                required: true,
-                message: "Please confirm your password!"
-              },
-              {
                 validator: this.compareToFirstPassword
               }
             ]
           })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="name">
-          {getFieldDecorator("nickname", {
-            rules: [
-              {
-                required: true,
-                message: "Please input your name!",
-                whitespace: true
-              }
-            ]
-          })(<Input />)}
-        </FormItem>
-
-        <FormItem {...formItemLayout} label="IdCard">
-          {getFieldDecorator("IdCard", {
-            rules: [
-              {
-                required: true,
-                message: "Please input your Idcard!"
-              }
-            ]
-          })(<Input id="id" />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="address">
-          {getFieldDecorator("address", {
-            rules: [
-              {
-                required: true,
-                message: "Please input your address!"
-              }
-            ]
-          })(<Input />)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">

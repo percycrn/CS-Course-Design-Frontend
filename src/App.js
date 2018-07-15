@@ -2,30 +2,31 @@ import React, { Component } from "react";
 import "./App.css";
 import MainPage from "./components/MainPage";
 import { withRouter } from "react-router-dom";
-import { UserIdContex } from "./store";
+import { UsersContex } from "./store";
 import SignPage from "./components/signpage/SignPage";
 
 class App extends Component {
   state = {
     isSignIn: false,
-    userId: -1
+    users: {
+      userId: -1,
+      phone: 11111111111
+    }
   };
 
-  signIn = userId => this.setState({ isSignIn: true, userId: userId });
+  signIn = users => this.setState({ isSignIn: true, users });
   signOut = () => this.setState({ isSignIn: false });
 
   render() {
-    return <MainPage />;
-
-    /*if (this.state.isSignIn) {
+    if (this.state.isSignIn) {
       return (
-        <UserIdContex.Provider value={this.state.userId}>
+        <UsersContex.Provider value={this.state.users}>
           <MainPage handleSignOut={this.signOut} />
-        </UserIdContex.Provider>
+        </UsersContex.Provider>
       );
     } else {
       return <SignPage handleSignIn={this.signIn} />;
-    }*/
+    }
   }
 }
 

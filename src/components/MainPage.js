@@ -5,7 +5,7 @@ import Header from "./Header";
 import logo from "./logo.svg";
 
 import Lostandfound from "./lostandfound/Lostandfound";
-import Released from "./release~/Released";
+import BeforeReleased from "./release~/BeforeReleased";
 import Releasing from "./release~/Releasing";
 import Account from "./account/Account";
 import Application from "./application/Application";
@@ -23,6 +23,7 @@ class MainPage extends Component {
     console.log(collapsed);
     this.setState({ collapsed });
   };
+
   render() {
     return (
       <Layout style={{ minHeight: "100vh" }}>
@@ -85,10 +86,14 @@ class MainPage extends Component {
         </Sider>
 
         <Layout>
-          <Header />
+          <Header handleSignOut={this.props.handleSignOut} />
           <Switch>
             <Route path="/lostandfound" component={Lostandfound} Lostandfound />
-            <Route path="/release/released" component={Released} Released />
+            <Route
+              path="/release/released"
+              component={BeforeReleased}
+              BeforeReleased
+            />
             <Route path="/release/releasing" component={Releasing} Releasing />
             <Route path="/application" component={Application} Application />
             <Route path="/claim" component={Claim} Claim />

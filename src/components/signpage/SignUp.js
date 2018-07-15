@@ -42,12 +42,13 @@ class SignUp extends Component {
 
         axios
           .post("/signup", values)
-          .then(res => {
-            console.log(res);
-            if (res.status === 200) {
+          .then(({ data }) => {
+            console.log(data);
+            if (data.status === 200) {
+              Modal.info({ content: data.message });
               this.props.handelSignState();
             } else {
-              Modal.error({ content: res.data });
+              Modal.error({ content: data.message });
             }
           })
           .catch(err => err && console.error(err));
@@ -64,7 +65,7 @@ class SignUp extends Component {
           </FormItem>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
-              {getFieldDecorator("phoneNumber", {
+              {getFieldDecorator("phone", {
                 rules: [
                   {
                     required: true,
@@ -144,7 +145,7 @@ class SignUp extends Component {
             </FormItem>
 
             <FormItem>
-              {getFieldDecorator("IdCard", {
+              {getFieldDecorator("id", {
                 rules: [
                   {
                     required: true,
