@@ -10,17 +10,21 @@ class SignIn extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        axios
-          .post("/signin", values)
-          .then(({ data }) => {
-            console.log(data);
-            if (data.status === 200) {
-              this.props.handleSignIn(data.users);
-            } else {
-              Modal.error({ content: data.message });
-            }
-          })
-          .catch(err => err && console.error(err));
+        if (values.phone === "admin") {
+          Modal.error({ content: "You know too much!" });
+        } else {
+          axios
+            .post("/signin", values)
+            .then(({ data }) => {
+              console.log(data);
+              if (data.status === 200) {
+                this.props.handleSignIn(data.users);
+              } else {
+                Modal.error({ content: data.message });
+              }
+            })
+            .catch(err => err && console.error(err));
+        }
       }
     });
   };
