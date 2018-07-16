@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Form,
-  Input,
-  DatePicker,
-  Tooltip,
-  Icon,
-  Button,
-  Modal,
-  Upload
-} from "antd";
+import { Form, Input, DatePicker, Tooltip, Icon, Button, Modal } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import axios from "axios";
 
@@ -16,36 +7,29 @@ const FormItem = Form.Item;
 class EditForm extends Component {
   state = {
     confirmDirty: false,
-    disabled: false,
-    value: 1,
-    phoneName: "foundPhone",
-    phone: 11111111111,
+    disabled: false, // input(storage )
+    phoneName: "foundPhone", // 表单属性名
+    phone: 11111111111, // 上个属性的具体内容
+    id: -1, // 要修改的item的id: foundId or lostId
     formData: []
   };
 
   componentDidMount() {
-    // const type = this.props.type;
-    // if (type === 1) {
-    //   axios.get(`/found/${this.props.foundId}`).then(({ data }) => {
-    //     console.log(data);
-    //     this.setState({
-    //       formData: data,
-    //       phone: this.props.foundPhone,
-    //       phoneName: "foundPhone"
-    //     });
-    //   });
-    // } else {
-    //   axios.get(`/lost/${this.props.lostId}`).then(({ data }) => {
-    //     console.log(data);
-    //     this.setState({
-    //       formData: data,
-    //       phone: this.props.lostPhone,
-    //       phoneName: "lostPhone"
-    //     });
-    //   });
-    // }
-    console.log("flag");
-    console.log(this.props.data);
+    if (this.props.type === 1) {
+      this.setState({
+        disabled: false,
+        phoneName: "foundPhone",
+        phone: this.props.foundPhone,
+        id: this.props.foundId
+      });
+    } else {
+      this.setState({
+        disabled: true,
+        phoneName: "lostPhone",
+        phone: this.props.lostPhone,
+        id: this.props.lostId
+      });
+    }
     this.setState({ formData: this.props.data });
   }
 
@@ -109,21 +93,28 @@ class EditForm extends Component {
     });
   };
 
-  handleFormChange = e => {
-    if (e.target.value === 1) {
-      this.setState({
-        disabled: false,
-        value: e.target.value,
-        phoneName: "foundPhone"
+  handleUpload(event) {
+    let formData = new FormData();
+    var pic = document.getElementById("upload").files[0];
+    formData.append("pic", pic);
+    formData.append("type", this.props.type);
+    formData.append("id", this.state.id);
+    axios
+      .post("/upload", {
+        // headers: {
+        //   content: "multipart/form-data"
+        // },
+        body: formData
+      })
+      .then(({ data }) => {
+        console.log(data);
+        if (data.status === 200) {
+          Modal.info({ content: data.message });
+        } else {
+          Modal.error({ content: data.message });
+        }
       });
-    } else {
-      this.setState({
-        disabled: true,
-        value: e.target.value,
-        phoneName: "lostPhone"
-      });
-    }
-  };
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -158,12 +149,15 @@ class EditForm extends Component {
 
     return (
       <div>
-        <Upload style={{ margin: "0px 0px 20px 134px" }}>
-          <Button>
-            <Icon type="upload" /> Upload picture
-          </Button>
-        </Upload>
-
+        <Input
+          id="upload"
+          name="file"
+          type="file"
+          accept="image/*"
+          onChange={event => {
+            this.handleUpload(event);
+          }}
+        />
         <Form
           onSubmit={this.handleSubmit}
           className="App-form"

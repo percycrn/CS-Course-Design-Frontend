@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Modal, List, Button, Avatar, message } from "antd";
+import { Modal, List, Button, Avatar } from "antd";
 import axios from "axios";
 import EditForm from "./EditForm";
 
 class ReleasedItem extends Component {
   state = {
     editVisible: false,
-    deleteVisible: false,
-    found: []
+    deleteVisible: false
   };
 
   setEditVisible(editVisible) {
@@ -21,6 +20,22 @@ class ReleasedItem extends Component {
       deleteVisible
     });
   }
+
+  findOrNot = e => {
+    if (this.props.type === 1) {
+      if (this.props.data.lostPhone !== null) {
+        return "已找到失主";
+      } else {
+        return "未找到失主";
+      }
+    } else {
+      if (this.props.data.found === 1) {
+        return "已找到";
+      } else {
+        return "未找到";
+      }
+    }
+  };
 
   handleDelete = e => {
     const type = this.props.type;
@@ -97,12 +112,14 @@ class ReleasedItem extends Component {
           avatar={<Avatar src={data.pic} />}
           title={data.name}
           description={
-            "outline: " +
-            data.outline +
-            "location: " +
+            "time: " +
+            new Date(data.time).toLocaleDateString() +
+            " | location: " +
             data.location +
-            " time:" +
-            new Date(data.time).toDateString()
+            " | outline: " +
+            data.outline +
+            " | " +
+            this.findOrNot()
           }
         />
       </List.Item>

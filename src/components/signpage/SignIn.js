@@ -78,7 +78,7 @@ class SignIn extends Component {
                 Sign In
               </Button>
               <br />
-              Or <a onClick={this.props.handelSignState}>register now!</a>
+              Or <a onClick={this.props.handleSignState}>register now!</a>
             </FormItem>
           </Form>
         </div>

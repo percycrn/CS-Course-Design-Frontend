@@ -1,17 +1,32 @@
 import React, { Component } from "react";
 import { Input, Breadcrumb, Button, List } from "antd";
-import FoundItem from "./FoundItem";
+import Item from "./LostandfoundItem";
+import axios from "axios";
 
 const Search = Input.Search;
-const data = [
-  {
-    title: "Ant Design Title 1"
-  },
-  {
-    title: "Ant Design Title 2"
-  }
-];
 class Lostandfound extends Component {
+  state = {
+    found: [],
+    lost: [],
+    data: [],
+    type: 1,
+    APName: "apply"
+  };
+  handleFoundData = e => {
+    this.setState({ data: this.state.found, type: 1, APName: "apply" });
+  };
+  handleLostData = e => {
+    this.setState({ data: this.state.lost, type: 0, APName: "prompt" });
+  };
+
+  componentWillMount() {
+    axios.get(`/users/${this.props.userId}/found/other`).then(({ data }) => {
+      this.setState({ found: data, data: data });
+    });
+    axios.get(`/users/${this.props.userId}/lost/other`).then(({ data }) => {
+      this.setState({ lost: data });
+    });
+  }
   render() {
     return (
       <div>
@@ -28,8 +43,8 @@ class Lostandfound extends Component {
             </div>
             <div className="App-search">
               <Button.Group>
-                <Button>Founds</Button>
-                <Button>Losts</Button>
+                <Button onClick={this.handleFoundData}>Founds</Button>
+                <Button onClick={this.handleLostData}>Losts</Button>
               </Button.Group>
               <Search
                 placeholder="input search text"
@@ -42,13 +57,20 @@ class Lostandfound extends Component {
             <List
               className="demo-loadmore-list"
               itemLayout="horizontal"
-              dataSource={data}
+              dataSource={this.state.data}
               pagination={{
                 position: "bottom",
                 pageSize: 6,
                 size: "small"
               }}
-              renderItem={item => <FoundItem />}
+              renderItem={item => (
+                <Item
+                  data={item}
+                  APName={this.state.APName}
+                  phone={this.props.phone}
+                  type={this.state.type}
+                />
+              )}
             />
           </div>
         </div>

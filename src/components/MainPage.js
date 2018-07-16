@@ -4,12 +4,12 @@ import { Layout, Menu, Icon } from "antd";
 import Header from "./Header";
 import logo from "./logo.svg";
 
-import Lostandfound from "./lostandfound/Lostandfound";
+import BeforeLostandfound from "./lostandfound/BeforeLostandfound";
 import BeforeReleased from "./release~/BeforeReleased";
 import Releasing from "./release~/Releasing";
 import Account from "./account/Account";
-import Application from "./application/Application";
-import Claim from "./claim/Claim";
+import BeforeApplication from "./application/BeforeApplication";
+import BeforeClaim from "./claim/BeforeClaim";
 
 const { Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -88,15 +88,23 @@ class MainPage extends Component {
         <Layout>
           <Header handleSignOut={this.props.handleSignOut} />
           <Switch>
-            <Route path="/lostandfound" component={Lostandfound} Lostandfound />
+            <Route
+              path="/lostandfound"
+              component={BeforeLostandfound}
+              BeforeLostandfound
+            />
             <Route
               path="/release/released"
               component={BeforeReleased}
               BeforeReleased
             />
             <Route path="/release/releasing" component={Releasing} Releasing />
-            <Route path="/application" component={Application} Application />
-            <Route path="/claim" component={Claim} Claim />
+            <Route
+              path="/application"
+              component={BeforeApplication}
+              BeforeApplication
+            />
+            <Route path="/claim" component={BeforeClaim} BeforeClaim />
             <Route path="/account" component={Account} Account />
           </Switch>
           <Footer className="App-root">

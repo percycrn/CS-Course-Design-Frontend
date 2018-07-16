@@ -46,7 +46,7 @@ class SignUp extends Component {
             console.log(data);
             if (data.status === 200) {
               Modal.info({ content: data.message });
-              this.props.handelSignState();
+              this.props.handleSignState();
             } else {
               Modal.error({ content: data.message });
             }
@@ -161,42 +161,6 @@ class SignUp extends Component {
                 />
               )}
             </FormItem>
-            {/* <FormItem>
-              {getFieldDecorator("address", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input your address!"
-                  }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="your address"
-                />
-              )}
-            </FormItem>
-
-            <FormItem>
-              {getFieldDecorator("email", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input your email!"
-                  }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="your email"
-                />
-              )}
-            </FormItem> */}
-
             <FormItem>
               <Button
                 type="primary"
@@ -205,7 +169,7 @@ class SignUp extends Component {
               >
                 Sign Up
               </Button>
-              Or <a onClick={this.props.handelSignState}>signin now!</a>
+              Or <a onClick={this.props.handleSignState}>signin now!</a>
             </FormItem>
           </Form>
         </div>
